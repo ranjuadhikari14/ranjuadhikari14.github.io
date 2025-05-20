@@ -1,0 +1,76 @@
+<!-- http://api.weatherapi.com/v1/current.json?key=cb6538f8a8fc4df1be492634250201&q=Nepal&aqi=yes -->
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #ACB6E5);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .weather-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .weather-container h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    .weather-details {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    .weather-details span {
+      display: block;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="weather-container">
+    <h1>Weather in Nepal</h1>
+    <div class="weather-details" id="weatherDetails">
+      Loading weather data...
+    </div>
+  </div>
+
+  <script>
+    const apiUrl = "https://api.weatherapi.com/v1/current.json?key=ba925f575b594342b81141454251905&q=Nepal&aqi=yes";
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const weatherContainer = document.getElementById("weatherDetails");
+        const location = data.location.name + ", " + data.location.region;
+        const temperature = data.current.temp_c + "°C";
+        const condition = data.current.condition.text;
+        const humidity = data.current.humidity + "%";
+        const wind = data.current.wind_kph + " kph";
+
+        weatherContainer.innerHTML = `
+          <span><strong>Location:</strong> ${location}</span>
+          <span><strong>Temperature:</strong> ${temperature}</span>
+          <span><strong>Condition:</strong> ${condition}</span>
+          <span><strong>Humidity:</strong> ${humidity}</span>
+          <span><strong>Wind Speed:</strong> ${wind}</span>
+        `;
+      })
+      .catch(error => {
+        document.getElementById("weatherDetails").textContent = "Failed to load weather data.";
+        console.error("Error fetching weather data:", error);
+      });
+  </script>
+</body>
+</html>
